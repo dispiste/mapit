@@ -74,7 +74,10 @@ for mapit_type, required_tags in sorted(mapit_type_to_tags.items()):
     output_directory = os.path.join(data_dir, "cache-with-political")
     xml_filename = os.path.join(output_directory, file_basename)
     query = get_query_relations_and_ways(required_tags)
-    get_osm3s(query, xml_filename)
+    if (config.local_server):
+        get_osm3s(query, xml_filename)
+    else:
+        get_remote(query, xml_filename)
 
     level_directory = os.path.join(output_directory, mapit_type)
     mkdir_p(level_directory)
