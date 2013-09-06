@@ -11,14 +11,17 @@ import urllib, urllib2
 from boundaries import *
 from generate_kml import *
 
-if len(sys.argv) > 2:
-    print >> sys.stderr, "Usage: %s [FIRST-MAPIT_TYPE]" % (sys.argv[0],)
+if len(sys.argv) > 3:
+    print >> sys.stderr, "Usage: %s [FIRST-MAPIT_TYPE [LAST-MAPIT_TYPE]]" % (sys.argv[0],)
     sys.exit(1)
 
 start_mapit_type = 'O02'
-if len(sys.argv) == 2:
+if len(sys.argv) >= 2:
     start_mapit_type = sys.argv[1]
 
+if len(sys.argv) > 2:
+    end_mapit_type = sys.argv[2]
+    
 dir = os.path.dirname(os.path.abspath(__file__))
 data_dir = os.path.join(dir, '..', 'data')
 
@@ -58,9 +61,15 @@ if start_mapit_type not in mapit_type_to_tags.keys():
     sys.exit(1)
 
 reached_first_mapit_type = False
+reached_last_mapit_type = False
 
 for mapit_type, required_tags in sorted(mapit_type_to_tags.items()):
 
+    if not reached_last_mapit_type:
+        if mapit_type == end_mapit_type:
+            reached_last_mapit_type = True
+    else:
+        break
     if not reached_first_mapit_type:
         if mapit_type == start_mapit_type:
             reached_first_mapit_type = True
