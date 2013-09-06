@@ -21,6 +21,8 @@ if len(sys.argv) >= 2:
 
 if len(sys.argv) > 2:
     end_mapit_type = sys.argv[2]
+else:
+    end_mapit_type = None
     
 dir = os.path.dirname(os.path.abspath(__file__))
 data_dir = os.path.join(dir, '..', 'data')
